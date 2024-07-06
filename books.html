@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Library</title>
+    <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+    <h1>Hello!</h1>
+    <p>Your favourite books are just one click away!</p>
+    <div class="container">
+        <input type="search" id="search" placeholder="Search by title or author">
+        <button id="search-button">Search</button>
+    </div>
+    <div class="container">
+        <label for="department">Search by Department:</label>
+        <select id="department">
+            <option value="" disabled selected>Select department</option>
+            <option value="Computer science">Computer Science</option>
+            <option value="Electrical Engineering">Electrical Engineering</option>
+            <option value="Mechanical Engineering">Mechanical Engineering</option>
+            <!-- Add more departments as needed -->
+        </select>
+        <button id="department-button">Search</button>
+    </div>
+    <div id="book-results" class="book-id"></div>
+
+    <script src="browsebooks.js"></script>
+</body>
+</html>
