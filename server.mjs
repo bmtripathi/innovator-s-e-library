@@ -20,19 +20,29 @@ app.use(cors());
 const userSchema = new mongoose.Schema({
     mail: String,
     password: String,
-    name: String,
-    branch: String
+
+    rollNumber:Number
+    
 });
 const User = mongoose.model('User', userSchema, 'cre');
 
 // Signup route
 app.post('/signup', async (req, res) => {
-    const { mail, password, name, branch } = req.body;
+    const { mail, password,rollNumber } = req.body;
+
     if (mail.endsWith('@iitdh.ac.in')) {
         try {
-            const newUser = new User({ mail, password, name, branch });
-            await newUser.save();
-            res.status(200).json({ message: 'Your info has been saved successfully' });
+            // Check if the user already exists
+            const existingUser = await User.findOne({ mail });
+
+            if (existingUser) {
+                res.status(200).json({ mssg: "you have already signed up" });
+            } else {
+                // Create a new user
+                const newUser = new User({ mail, password,rollNumber});
+                await newUser.save();
+                res.status(200).json({ message: 'Your info has been saved successfully' });
+            }
         } catch (err) {
             res.status(500).json({ message: 'Internal server error', error: err });
         }
@@ -41,20 +51,41 @@ app.post('/signup', async (req, res) => {
     }
 });
 
+
 // Login route
-app.get('/login/:mail/:password', async (req, res) => {
+app.get('/login/:mail/:password/:rollNumber', async (req, res) => {
     try {
-        const { mail, password } = req.params;
-        const user = await User.findOne({ mail, password });
+        const { mail, password, rollNumber } = req.params;
+        const user = await User.findOne({ mail, password, rollNumber });
+        const issuer = await Issue.findOne({ rollNumber });
+
         if (user) {
-            res.status(200).json({ mssg: 'welcome' });
+            if (issuer) {
+                console.log('Date Issued:', issuer.dateIssued); // Debugging log
+                const issueDate = new Date(issuer.dateIssued);
+                const dueDate = new Date(issueDate);
+                dueDate.setDate(issueDate.getDate() + 15);
+                console.log('Due Date:', dueDate); // Debugging log
+
+                res.status(200).json({ 
+                    mssg: `Welcome, your book "${issuer.bookName}" is due on ${dueDate.toDateString()}`,
+                    bookName: issuer.bookName,
+                    dueDate: dueDate.toDateString()
+                });
+            } else {
+                res.status(200).json({ mssg: 'Welcome' });
+            }
         } else {
-            res.status(400).json({ mssg: 'you haven\'t signed up' });
+            res.status(400).json({ mssg: "You haven't signed up" });
         }
     } catch (err) {
-        res.status(500).json({ mssg: 'error' });
+        console.error(err);
+        res.status(500).json({ mssg: 'Internal server error' });
     }
 });
+
+
+ 
 
 // Define book schema and model
 const bookSchema = new mongoose.Schema({
@@ -129,12 +160,60 @@ app.get('/books', async (req, res) => {
 app.get('/books/department', async (req, res) => {
     try {
         const searchQuery = req.query.search;
-        const books = await Book.find({ department: { $regex: searchQuery, $options: 'i' } }).limit(5).exec(); // Search by genre and limit results to 5
+        const books = await Book.find({ department: { $regex: searchQuery, $options: 'i' } }).exec(); // Search by genre and limit results to 5
         res.status(200).json(books);
     } catch (err) {
         res.status(500).json({ message: 'Could not fetch documents', error: err });
     }
 });
+// //Schema and model for issuing books
+const issueSchema = new mongoose.Schema({
+    name: String,
+    rollNumber: String,
+    bookName: String,
+    dateIssued: { type: Date }
+});
+
+const Issue = mongoose.model('Issue', issueSchema, 'issued');
+
+app.post('/issue', async (req, res) => {
+    try {
+        const { name, rollNumber, bookName, dateIssued } = req.body;
+        const book = await Book.findOne({ title: bookName });
+        
+        if (book && book.count > 0) {
+            book.count -= 1;
+            await book.save();
+            const issuer = new Issue({ name, rollNumber, bookName, dateIssued });
+            await issuer.save();
+            res.status(200).json({ mssg: "your book has been issued successfully" });
+        } else {
+            res.status(400).json({ mssg: "book currently not available" });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ mssg: "error" });
+    }
+});
+app.post('/return', async (req, res) => {
+    try {
+        const { bookName } = req.body;
+        const book = await Book.findOne({ title: bookName });
+        
+        if (book) {
+            book.count += 1;
+            await book.save();
+            res.status(200).json({ mssg: "your book has been returned successfully" });
+        } else {
+            res.status(400).json({ mssg: "book not found" });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ mssg: "error returning book" });
+    }
+});
+
+ 
 
 // API route handler for admin
 const admin = new mongoose.Schema({

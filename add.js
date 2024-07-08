@@ -7,7 +7,7 @@ document.querySelector('#addBookForm').addEventListener('submit', (event) => {
     const genre = document.querySelector('#genre').value;
     const department = document.querySelector('#department').value;
     const count = document.querySelector('#count').value;
-    const numberOfBooks = document.querySelector('#numberOfBooks').value;
+   
 
     // Create an object to hold the form data
     const bookData = {
@@ -16,7 +16,7 @@ document.querySelector('#addBookForm').addEventListener('submit', (event) => {
         genre: genre,
         department: department,
         count: parseInt(count),
-        numberOfBooks: parseInt(numberOfBooks)
+        
     };
 
     // Send a POST request to the '/add' endpoint

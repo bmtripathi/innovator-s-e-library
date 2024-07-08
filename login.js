@@ -1,9 +1,12 @@
-const fetchcred = async (mail, password) => {
+const fetchcred = async (mail, password, rollNumber) => {
     try {
-        const response = await fetch(`http://localhost:3000/login/${mail}/${password}`);
+        const response = await fetch(`http://localhost:3000/login/${mail}/${password}/${rollNumber}`);
         const data = await response.json();
-        if (data.mssg==='welcome') {
 
+        if (data.mssg.startsWith('Welcome, your book')) {
+            alert(`Your book "${data.bookName}" is due on ${data.dueDate}`);
+            window.location.href = 'books.html';
+        } else if (data.mssg === 'Welcome') {
             window.location.href = 'books.html';
         } else {
             console.log(data.mssg);
@@ -13,13 +16,10 @@ const fetchcred = async (mail, password) => {
     }
 };
 
-                   
-    document.querySelector('.submit').addEventListener('click', () => {
+document.querySelector('.submit').addEventListener('click', () => {
     const mail = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    const department=document.getElementById('department').value;
-    if (mail && password) {
-        fetchcred(mail, password);
-        
-    }
+    const rollNumber = document.getElementById('rollNumber').value;
+
+    fetchcred(mail, password, rollNumber);
 });

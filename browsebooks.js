@@ -54,14 +54,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p><strong>Author:</strong> ${book.author}</p>
                     <p><strong>Genre:</strong> ${book.genre}</p>
                     <p>No. of books in stock: ${book.count}</p>
-                    <button class="issue-button">Issue this book</button>
+                    <button class="issue-button" data-title="${book.title}">Issue this book</button>
                 `;
                 
                 bookResults.appendChild(bookElement);
 
                 const issueButton = bookElement.querySelector('.issue-button');
-                issueButton.addEventListener('click', () => {
-                    window.location.href = 'issue.html';
+                issueButton.addEventListener('click', (event) => {
+                    const bookTitle = event.target.getAttribute('data-title');
+                    window.location.href = `issue.html?book_name=${encodeURIComponent(bookTitle)}`;
                 });
             });
         }
