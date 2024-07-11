@@ -7,22 +7,25 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <form>
-        <p>Sign up using the institute mail id!</p>
-        <div class="sign">
+    
+        <form>
+            <p>Sign up using the institute mail id!</p>
+            <div class="sign">
             <label for="email">Email</label>
-            <input type="email" name="email" id="email" required>
-        </div>
-        <div class="sign1">
+            <input type="email" name="email" id="email"  placeholder="Enter your email" required>
+            </div>
+            <div class="sign1">
             <label for="password">Password</label>
-            <input type="password" name="password" id="password" required>
-        </div>
-        <div class="sign2">
+            <input type="password" name="password" id="password" placeholder="Enter your password" required>
+            <span id="togglePassword" class="eye-icon">&#128065;</span>
+            </div>
+            <div class="sign2">
             <label for="rollNumber">Roll Number</label>
-            <input type="text" id="rollNumber" required>
-        </div>
-        <button class="su">Submit</button>
-    </form>
+            <input type="text" id="rollNumber" placeholder="Enter your roll number" required>
+            </div>
+         <button class="su">Submit</button>
+        </form>
+        
     <script src="check_validMail.js"></script>
 </body>
 </html>

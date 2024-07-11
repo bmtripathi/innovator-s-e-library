@@ -5,7 +5,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background: url('background.jpg') no-repeat center center fixed;
+  background: url(image/add.jpg) no-repeat center center fixed;
   background-size: cover;
   color: #333;
 }
@@ -20,9 +20,10 @@ h1 {
 /* Container styling */
 .container {
   max-width: 600px;
-  margin: 50px auto;
+  margin: 50px ;
+  margin-right: 90px;
   padding: 20px;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(129, 132, 92, 0.489);
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -36,6 +37,7 @@ form {
 label {
   margin: 10px 0 5px;
   font-weight: bold;
+  color: white;
 }
 
 input {
@@ -62,8 +64,9 @@ button[type="submit"]:hover {
 /* Back button styling */
 a button[type="button"] {
   display: block;
-  margin: 20px auto 0;
-  padding: 10px 20px;
+  margin-bottom: 100px; ;
+  margin-left: 80px;
+  padding: 10px 230px; 
   background-color: #007bff;
   color: #fff;
   border: none;

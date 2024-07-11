@@ -9,6 +9,8 @@ body {
   align-items: center;
   height: 100vh;
   color: #333;
+  background: url(image/pexels-raj-vaishnaw-258653-791024.jpg);
+  background-size: cover;
 }
 
 #issue-message {
@@ -26,11 +28,37 @@ body {
 #due-date-message {
   background-color: #f9f9f9;
   color: #555;
-  padding: 15px;
+  padding: 20px;
   border: 1px solid #ddd;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-size: 16px;
   text-align: center;
   width: 80%;
+  animation: gradientChange 3s infinite;
 }
+
+@keyframes gradientChange {
+  
+  50% {
+    background-color: #2fda11;
+  }
+  50% {
+    background-color: #2b16ce;
+  }
+  50% {
+    background-color: #d415c4;
+  }
+ 50% {
+    background-color: #cd1a1a;
+  }
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 500px;
+}
+
+
